@@ -10,13 +10,28 @@ var (
 	ctx = context.TODO()
 )
 
-func get(cln *redis.Client) {
-	name := cln.Get(ctx, "name")
-	fmt.Println(name)
+func get(cln *redis.Client) error {
+	x, err := cln.Get(ctx, "user1").Result()
+
+	if err == redis.Nil {
+		fmt.Println("no value found")
+	} else if err != nil {
+		panic(err)
+	} else {
+		fmt.Println(x)
+	}
+
+	return nil
 }
 
-func set(cln *redis.Client) {
-	cln.Set(ctx, "user", "nkr", 0)
+func set(cln *redis.Client) error {
+	err := cln.Set(ctx, "user1", "lone", 0).Err()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func checkConn(cln *redis.Client) {
@@ -34,7 +49,7 @@ func main() {
   })
 
 	checkConn(client)
-	set(client)
+	//set(client)
 	get(client)
 
 
