@@ -61,20 +61,18 @@ func checkConn(cln *redis.Client) {
 }
 
 func main() {
-	fmt.Println("Testing Golang Redis")
-
-	//client := redis.NewClient(&redis.Options{
-	//	Addr: "localhost:6379",
-	//	Password: "",
-	//	DB: 0,
-	//})
-
-	//checkConn(client)
-	//set(client)
-	//get(client)
-
+	fmt.Println("Testing Golang Redis\n")
 	redis_server_start()
-	//redis_server_stop()
+
+	client := redis.NewClient(&redis.Options{
+		Addr: "localhost:6379",
+		Password: "",
+		DB: 0,
+	})
+
+	checkConn(client)
+	//set(client)
+	get(client)
 
 	//fmt.Printf("%T\n", client)
 }
