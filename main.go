@@ -1,14 +1,35 @@
 package main
 
 import (
-  "fmt"
+	"os/exec"
+	"fmt"
 	"context"
-  "github.com/go-redis/redis/v8"
+	"github.com/go-redis/redis/v8"
 )
 
 var (
 	ctx = context.TODO()
 )
+
+func redis_server_stop() {
+	cmd := exec.Command("/bin/sh", "-c", "sudo service redis-server stop")
+	stdout, err := cmd.Output()
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	} else { fmt.Println(string(stdout)) }
+}
+
+func redis_server_start() {
+	cmd := exec.Command("/bin/sh", "-c", "sudo service redis-server start")
+	stdout, err := cmd.Output()
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	} else { fmt.Println(string(stdout)) }
+}
 
 func get(cln *redis.Client) error {
 	x, err := cln.Get(ctx, "user1").Result()
@@ -40,18 +61,20 @@ func checkConn(cln *redis.Client) {
 }
 
 func main() {
-  fmt.Println("Testing Golang Redis")
+	fmt.Println("Testing Golang Redis")
 
-	client := redis.NewClient(&redis.Options{
-    Addr: "localhost:6379",
-    Password: "",
-    DB: 0,
-  })
+	//client := redis.NewClient(&redis.Options{
+	//	Addr: "localhost:6379",
+	//	Password: "",
+	//	DB: 0,
+	//})
 
-	checkConn(client)
+	//checkConn(client)
 	//set(client)
-	get(client)
+	//get(client)
 
+	redis_server_start()
+	//redis_server_stop()
 
 	//fmt.Printf("%T\n", client)
 }
