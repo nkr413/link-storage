@@ -1,0 +1,15 @@
+@font-face {
+	font-family: "Roboto Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-display: swap;
+	src: url('Roboto-Regular.ttf');
+}
+
+@font-face {
+	font-family: "Roboto Medium";
+	font-style: normal;
+	font-weight: normal;
+	font-display: swap;
+	src: url('Roboto-Medium.ttf');
+}

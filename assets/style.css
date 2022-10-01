@@ -1,0 +1,56 @@
+@import 'fonts/font.css';
+
+body {
+	padding: 0;
+	margin: 0;
+	scroll-behavior: smooth;
+	background-color: white;
+
+	overflow: auto;
+	scrollbar-width: thin;
+	scrollbar-color: hsl(0 0% 50%);
+}
+
+* {transition: 0.2s ease-in-out; font-family: 'Roboto Regular', sans-serif;}
+button:focus {outline: none;}
+input:focus {outline: none;}
+textarea:focus {outline: none;}
+ul, li {padding: 0;margin: 0;list-style: none;}
+
+::-webkit-scrollbar {background: rgba(255, 255, 255, 1); width: 7px;, height: 2px;}
+::-webkit-scrollbar-thumb {background: #999999; border-radius: 0px;}
+::-webkit-scrollbar-track-piece {background: transparent;}
+::selection { color: white; background-color: black; }
+
+#main-block {
+	margin-left: auto;
+	margin-right: auto;
+	background: transparent;
+	border: 0px solid transparent;
+	width: 90%;
+	padding-top: 40px;
+}
+
+#main-data-block {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+#main-data-block > div {
+	background-color: white;
+	color: black;
+	font-size: 18pt;
+	letter-spacing: 0.5px;
+	border: 2px solid black;
+	border-radius: 10px;
+	display: block;
+	
+	padding: 10px;
+	padding-left: 16px;
+	padding-right: 16px;
+
+	margin-right: 20px;
+	margin-bottom: 20px;	
+}

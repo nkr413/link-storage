@@ -4,8 +4,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>link-storage</title>
+	<link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-	<div id="main-block">Hello World !</div>
+	
+	<div id="main-block">	
+		<div id="main-data-block">
+			{{ range .Base }}
+				<div>{{ . }}</div>
+			{{ end }}
+		</div>
+	</div>
+
 </body>
 </html>
