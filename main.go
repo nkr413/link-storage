@@ -7,11 +7,11 @@ import (
 	"context"
 	"github.com/go-redis/redis/v8"
 
-	"html/template"
-	"io"
-	"net/http"
-	"github.com/labstack/echo/v4"
+	"log"
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html"
 )
+
 
 var (
 	ctx = context.TODO()
@@ -38,32 +38,24 @@ func redis_server_start() {
 }
 // ----------------------------
 
+
 // SERVER FUNCTIONS
-type TemplateRenderer struct {
-	templates *template.Template
-}
-func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
-	if viewContext, isMap := data.(map[string]interface{}); isMap {
-		viewContext["reverse"] = c.Echo().Reverse
-	}
+func start_server(base []string) {
+	engine := html.New("./public", ".html")
 
-	return t.templates.ExecuteTemplate(w, name, data)
-}
+	app := fiber.New(fiber.Config{
+		Views: engine,
+	})
 
-func start_server() {
-	e := echo.New()
-	renderer := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("static/*.html")),
-	}
-	e.Renderer = renderer
-
-	e.GET("/", func(c echo.Context) error {
-		return c.Render(http.StatusOK, "index.html", map[string]interface{}{
-			"name": "Dolly!",
+	app.Get("/", func(c *fiber.Ctx) error {
+		return c.Render("index", fiber.Map {
+			"Base": base,
 		})
-	}).Name = "foobar"
+	})
 
-	e.Logger.Fatal(e.Start(":8000"))
+	app.Static("/assets", "./assets")
+
+	log.Fatal(app.Listen(":3000"))
 }
 // ----------------------------
 
@@ -85,7 +77,7 @@ func get(cln *redis.Client) error {
 
 func set(cln *redis.Client) error {	
 	//var numbers [5]int = [5]int{1,2,3,4,5}
-	err := cln.Set(ctx, "4", "four", 0).Err()
+	err := cln.Set(ctx, "8", "eight", 0).Err()
 
 	if err != nil {
 		return err
@@ -94,7 +86,7 @@ func set(cln *redis.Client) error {
 	return nil
 }
 
-func get_all(cln *redis.Client) {
+func get_all(cln *redis.Client) []string {
 	var (
 		cursor int = 1
 		values = []string{}
@@ -119,7 +111,7 @@ func get_all(cln *redis.Client) {
 		}
 	}
 
-	fmt.Println(values)
+	return values
 }
 
 func checkConn(cln *redis.Client) {
@@ -138,11 +130,8 @@ func main() {
 		Password: "",
 		DB: 0,
 	})
-
 	checkConn(client)
-	//set(client)
-	
-	get_all(client)
 
-	//fmt.Printf("%T\n", client)
+	base := get_all(client)
+	start_server(base)
 }
